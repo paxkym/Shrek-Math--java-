@@ -1,12 +1,21 @@
+package src.main.java;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.*;
+import src.main.Windows.MainWindow;
 
-public class Shrek_Math implements ActionListener {
+        // todo:
+        /*
+         Create scrollable tab interface in src.main.Windows.MainWindow
+
+         
+        */
+
+public class Math implements ActionListener {
     // Variables
     JFrame MainWindow = new JFrame();
-    JPanel Panel = new JPanel();
+    JPanel Panel;
     JMenuBar MenuBar = new JMenuBar();
 
     // Elements
@@ -14,23 +23,12 @@ public class Shrek_Math implements ActionListener {
 
     
     // App method
-    public Shrek_Math() {
+    public Math() {
         // Setup
 
-        // JPanel
-        {
-            GridBagConstraints gbc = new GridBagConstraints();
-            Panel.setLayout(new GridBagLayout());
-            Panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        MainWindow MainWindowClass = new MainWindow();
+        Panel = MainWindowClass.MainPanel;
 
-            gbc.gridy = 0;
-            gbc.gridx = 0;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            Panel.add(newButton, gbc);
-
-
-
-        }
         // JFrame
         {
             MainWindow.add(Panel);
@@ -54,7 +52,7 @@ public class Shrek_Math implements ActionListener {
 
     // Main method
     public static void main(String args[]) {
-        Shrek_Math app = new Shrek_Math();
+        Math app = new Math();
 
     }
 

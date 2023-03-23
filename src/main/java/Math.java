@@ -14,37 +14,15 @@ import src.main.Windows.MainWindow;
 
 public class Math implements ActionListener {
     // Variables
-    JFrame MainWindow = new JFrame();
-    JPanel Panel;
-    JMenuBar MenuBar = new JMenuBar();
-
-    // Elements
-    JButton newButton = new JButton("New Tab");
 
     
     // App method
     public Math() {
         // Setup
+        MainWindow MainWindow = new MainWindow();
 
-        MainWindow MainWindowClass = new MainWindow();
-        Panel = MainWindowClass.MainPanel;
 
-        // JFrame
-        {
-            MainWindow.add(Panel);
-            MainWindow.setTitle("Shrek Math Software");
-            MainWindow.setVisible(true);
-            MainWindow.pack();
-            MainWindow.setSize(570, 400);
-            MainWindow.setResizable(false);
-            MainWindow.setJMenuBar(MenuBar);
-            if (System.getProperty("os.name") != "Mac OS X") {
-                MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            } else {
-                MainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-
-        }
+        // MainWindow.addTab("Hi");
 
 
 

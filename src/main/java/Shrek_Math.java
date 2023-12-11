@@ -1,13 +1,19 @@
+package src.main.java;
+import src.main.java.Windows.MainWindow;
+import src.main.java.Tabs.Tab;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.*;
+
 
 public class Shrek_Math implements ActionListener {
     // Variables
     JFrame MainWindow = new JFrame();
     JPanel Panel = new JPanel();
     JMenuBar MenuBar = new JMenuBar();
+    MainWindow MainPanel = new MainWindow();
 
     // Elements
     JButton newButton = new JButton("New Tab");
@@ -18,19 +24,8 @@ public class Shrek_Math implements ActionListener {
         // Setup
 
         // JPanel
-        {
-            GridBagConstraints gbc = new GridBagConstraints();
-            Panel.setLayout(new GridBagLayout());
-            Panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-
-            gbc.gridy = 0;
-            gbc.gridx = 0;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            Panel.add(newButton, gbc);
-
-
-
-        }
+        MainPanel.CreateWindow();
+        Panel = MainPanel.panel;
         // JFrame
         {
             MainWindow.add(Panel);

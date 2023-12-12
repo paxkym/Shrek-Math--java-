@@ -1,7 +1,13 @@
 package src.main.Tabs;
 
-public class Tab {
-    public String name;
+import javax.swing.JPanel;
 
+public  class Tab {
+    public String name;
+    public String type;
+
+    public JPanel buildTab(){
+        return null;
+    };
     
 }

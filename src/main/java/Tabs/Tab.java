@@ -1,9 +1,9 @@
 package src.main.java.Tabs;
 
 public class Tab {
-String name;
-String type;
-int subtype;
-float[] value;
+public String name;
+public String type;
+public int subtype;
+public float[] value;
 
 }

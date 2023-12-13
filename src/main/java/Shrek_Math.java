@@ -20,7 +20,7 @@ public class Shrek_Math implements ActionListener {
 
     
     // App method
-    public Shrek_Math() {
+    public Shrek_Math() throws InterruptedException {
         // Setup
 
         // JPanel
@@ -43,12 +43,19 @@ public class Shrek_Math implements ActionListener {
 
         }
 
-
+        while(true){
+        if(MainPanel.renderIndex == 1){
+            MainPanel.CreateNewTabPanel();
+            MainPanel.renderIndex = 0;
+        }
+        
+        Thread.sleep(100);
+    }
 
     }
 
     // Main method
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
         Shrek_Math app = new Shrek_Math();
 
     }

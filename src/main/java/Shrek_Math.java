@@ -47,8 +47,14 @@ public class Shrek_Math implements ActionListener {
         if(MainPanel.renderIndex == 1){
             MainPanel.CreateNewTabPanel();
             MainPanel.renderIndex = 0;
+        }else if(MainPanel.renderIndex == 2){
+            MainPanel.goToTab(0);
+            MainPanel.renderIndex = 0;
+        }else if(MainPanel.renderIndex == 3){
+            MainPanel.CreateWindow();
+            MainPanel.renderIndex = 0;
         }
-        
+
         Thread.sleep(100);
     }
 

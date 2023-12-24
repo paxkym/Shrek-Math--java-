@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
@@ -22,7 +23,8 @@ import src.main.java.Windows.SettingsWindow;
 
 public class MainWindow {
 boolean list1IsSelected = true;
-int selection = 0;
+boolean h = false;
+public int selection = 0;
 ArrayList<Tab> tabs = new ArrayList<Tab>(0);
 public int renderIndex = 0;
 SettingsWindow settings = new SettingsWindow();
@@ -34,23 +36,26 @@ DefaultListModel model = new DefaultListModel();
 public JPanel panel = new JPanel();
 public JPanel menuBarTop;
 JList list = new JList(model);
-public JPanel spanel = new JPanel();
+// public JPanel spanel = new JPanel();
 JScrollPane scroll = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 ExecutorService thread = Executors.newSingleThreadExecutor();    
 
 public void goToTab(int index){
-    Tab tab = tabs.get(index);//tab.type == "Custom Wave"
+    // Tab tab = tabs.get(index);//tab.type == "Custom Wave"
     if(true){
     String opt[] = {"Square Wave", "Triangle Wave", "Sine Wave", "Falling Edge Sawtooth Wave", "Rising Edge Sawtooth Wave", "Straight Line", "Noise (Random)", "Bell Curve"};
     JComboBox menu = new JComboBox(opt); 
-    JButton button = new JButton("Create");
-    spanel = new JPanel();
+    JButton button = new JButton("Done");
+    JPanel spanel = new JPanel();
     spanel.setLayout(new FlowLayout());
     spanel.add(menu);
     spanel.add(button);
+     panel.removeAll();
+      panel.repaint();
+      panel.revalidate();
     panel.add(spanel, BorderLayout.CENTER);
-    panel.repaint();
-    panel.revalidate();
+    panel.add(new JScrollPane(list), BorderLayout.WEST);
+    System.out.println("goToTab");
     
     
     button.addActionListener(new ActionListener(){
@@ -61,6 +66,7 @@ public void goToTab(int index){
             }
     });
   }
+
   return;
 }
 public Tab createNewTab(String name, String type, int subtype){
@@ -75,12 +81,13 @@ public void requestRendering(int type){
     renderIndex = type;
    }
    public void CreateNewTabPanel(){
+    
         // Build new interface every time button is pressed
     String opt[] = {"Custom Wave", "Custom Function", "Constant", "Arithmetic", "Trigonometry", "Calculus", "Boolean", "Transform", "Statistics", "Miscellaneous", "Complex Numbers"};
     TextArea textarea = new TextArea("Tab");
     JComboBox menu = new JComboBox(opt); 
     JButton button = new JButton("Create");
-    spanel = new JPanel();
+    JPanel spanel = new JPanel();
     spanel.setLayout(new FlowLayout());
     spanel.add(textarea);
     spanel.add(menu);
@@ -96,10 +103,10 @@ public void requestRendering(int type){
               System.out.println("Tab added");
               tabs.add(createNewTab(textarea.getText(), "Custom Wave", 0));
               model.addElement(textarea.getText());
-              goToTab(selection);
+              requestRendering(2);
             }
     });
-      
+  
     return;
    }
    public void buildTopPanel(){
@@ -126,6 +133,7 @@ public void requestRendering(int type){
             @Override
             public void actionPerformed(ActionEvent e) {
               System.out.println("Tab deleted");
+              requestRendering(2);
             }
     });
     ViewButton.addActionListener(new ActionListener(){
@@ -181,6 +189,7 @@ list = new JList(model);
         });
             
 
-
+        panel.repaint();
+        panel.revalidate();
     }
 }

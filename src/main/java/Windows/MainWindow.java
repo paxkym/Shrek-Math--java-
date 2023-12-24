@@ -39,7 +39,28 @@ JScrollPane scroll = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
 ExecutorService thread = Executors.newSingleThreadExecutor();    
 
 public void goToTab(int index){
+    Tab tab = tabs.get(index);//tab.type == "Custom Wave"
+    if(true){
+    String opt[] = {"Square Wave", "Triangle Wave", "Sine Wave", "Falling Edge Sawtooth Wave", "Rising Edge Sawtooth Wave", "Straight Line", "Noise (Random)", "Bell Curve"};
+    JComboBox menu = new JComboBox(opt); 
+    JButton button = new JButton("Create");
+    spanel = new JPanel();
+    spanel.setLayout(new FlowLayout());
+    spanel.add(menu);
+    spanel.add(button);
+    panel.add(spanel, BorderLayout.CENTER);
+    panel.repaint();
+    panel.revalidate();
+    
+    
+    button.addActionListener(new ActionListener(){
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              System.out.println("Tab added");
+            }
+    });
+  }
   return;
 }
 public Tab createNewTab(String name, String type, int subtype){
@@ -55,13 +76,13 @@ public void requestRendering(int type){
    }
    public void CreateNewTabPanel(){
         // Build new interface every time button is pressed
+    String opt[] = {"Custom Wave", "Custom Function", "Constant", "Arithmetic", "Trigonometry", "Calculus", "Boolean", "Transform", "Statistics", "Miscellaneous", "Complex Numbers"};
     TextArea textarea = new TextArea("Tab");
-    JPopupMenu menu = new JPopupMenu(); 
+    JComboBox menu = new JComboBox(opt); 
     JButton button = new JButton("Create");
     spanel = new JPanel();
     spanel.setLayout(new FlowLayout());
     spanel.add(textarea);
-    menu.add(new JMenuItem("Custom Wave"));menu.add(new JMenuItem("Custom Function"));menu.add(new JMenuItem("Constant"));
     spanel.add(menu);
     spanel.add(button);
     System.out.println("Hi");
@@ -74,6 +95,7 @@ public void requestRendering(int type){
             public void actionPerformed(ActionEvent e) {
               System.out.println("Tab added");
               tabs.add(createNewTab(textarea.getText(), "Custom Wave", 0));
+              model.addElement(textarea.getText());
               goToTab(selection);
             }
     });

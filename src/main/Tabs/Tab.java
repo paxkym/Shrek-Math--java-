@@ -8,6 +8,9 @@ public  class Tab {
 
     public JPanel buildTab(){
         return null;
+    }
+
+    public void process() {
     };
     
 }

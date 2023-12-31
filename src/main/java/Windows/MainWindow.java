@@ -10,6 +10,7 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -42,7 +43,7 @@ public int renderIndex = 0;
 SettingsWindow settings = new SettingsWindow();
 Processor proc = new Processor();
 public ArrayList views = new ArrayList<Tab>();
-
+public LinkedList thrds = new LinkedList<Thread>();
 
 
 DefaultListModel model = new DefaultListModel();
@@ -50,9 +51,28 @@ public JPanel panel = new JPanel();
 public JPanel menuBarTop;
 JList list = new JList(model);
 // public JPanel spanel = new JPanel();
-                      
+class Updater extends Thread{
+int index = 0;
+Updater(int i){
+index = i;
+}
+public void run(){
+String out = CustomFunction.readFile(new File("Com2.txt"));
+while(selection == index){
+out = CustomFunction.readFile(new File("Com2.txt"));
+if(out.charAt(0) != '{') tabs.get(index).result = out; else tabs.get(index).result = "";
+try {
+  Thread.sleep(500);
+} catch (InterruptedException e) {}
+panel.repaint();
+panel.revalidate();
+}
+// int i[] = new int[3];
+// int j = i[8];
+
+}        
+}            
 public void CreateView(int index){
-System.out.println(tabs.get(index).value.size());
 ViewWindow view = new ViewWindow();
 views.add(view);
 proc.views = views;
@@ -66,6 +86,9 @@ return f;
 }
 public void goToTab(int index){
     Tab tab = tabs.get(index);
+    if(tab.type != "Custom Function" && thrds.size() != 0){
+      thrds.removeLast();
+    }
     if(tab.type == "Custom Wave"){
     String opt[] = {"Square Wave", "Triangle Wave", "Sine Wave", "Rising Edge Sawtooth Wave", "Falling Edge Sawtooth Wave", "Straight Line", "Noise (Random)", "Bell Curve"};
     JComboBox menu = new JComboBox(opt); 
@@ -192,6 +215,8 @@ public void goToTab(int index){
         }
         
        });
+       thrds.add(new Updater(selection));
+       ((Thread) thrds.getLast()).start();
   }
   return;
 }
@@ -317,7 +342,7 @@ list = new JList(model);
 
                         // list.setSelectedIndex(selection);
                     }else{
-                        selection = list.getSelectedIndex();
+                        selection = list.getSelectedIndex()-1;
                         goToTab(list.getSelectedIndex()-1);
                         System.out.println("S");
                     };

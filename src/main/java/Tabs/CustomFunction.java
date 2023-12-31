@@ -17,7 +17,22 @@ public class CustomFunction extends Tab{
 // public CustomFunction(){
 
 // }
+static public String readFile(File name){
+Scanner fr;
+LinkedList<String> str = new LinkedList<String>();
+try{
+    fr = new Scanner(name);
+    while (fr.hasNextLine()) {
+    str.add(fr.nextLine());
+     }
+     fr.close();
+    } catch (Exception e){
 
+    }
+String out = "";
+for(int i = 0;i<str.size();i++) out += str.get(i);
+return out;
+}
 public void process(){
 // Runs script
 File com2 = new File("Com2.txt");
@@ -38,63 +53,56 @@ String c1Name = "";
 // for(int i = 0;i<count2;i++) c1Name += (com2.getAbsolutePath().charAt(i));
 // System.out.println(c1Name);
 File com1 = new File("Com1.java");
+File com1t = new File("Com1.txt");
+String fc = "";
+
     //Write Java program to file
       try {
         FileWriter myWriter = new FileWriter("Com1.java");
-        myWriter.write("import java.io.File;\n" + //
-                "import java.io.FileWriter;\n" + //
-                "import java.io.IOException;\n" + //
-                "import java.util.ArrayList;\n" + //
-                "public class Com1 {\n" + //
-                "ArrayList<Float> input = new ArrayList<Float>();\n" + //
-                "ArrayList<Float> output = new ArrayList<Float>();\n" + //
-                "\n" + //
-                "public static void run(){\n" + //
-                "\n" + //
-                text +
-                "}\n" + //
-                "public static void main(String args[]){\n" + //
-                "try{run();}catch(Exception e){\n" + //
-                "FileWriter writer;\n" + //
-                "try {\n" + //
-                "    writer = new FileWriter(\"Com2.txt\");\n" + //
-                "    writer.write(e.getMessage());\n" + //
-                "    writer.close();\n" + //
-                "} catch (IOException e1) {}\n" + //
-                "}\n" + //
-                "File com2 = new File(\"Com2.txt\");\n" + //
-                "}}");
+        myWriter.write(readFile(com1t).split("®")[0]+text+readFile(com1t).split("®")[1]);
         myWriter.close();
     } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
     }
-
+    try {
+        FileWriter myWriter = new FileWriter("Com2.txt");
+        myWriter.write(("("+realLength+",")+(resolution+",")+(input1!=null?input1.value:""));
+        myWriter.close();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
     
     //Run program
     ProcessBuilder p =
     new ProcessBuilder("java", com1.getAbsolutePath());
     try {
         p.start();
-    } catch (IOException e) {
+    } catch (Exception e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
     }
-Scanner fr;
-LinkedList<String> str = new LinkedList<String>();
-    try {
-        fr = new Scanner(com2);
-        while (fr.hasNextLine()) {
-        str.add(fr.nextLine());
-      }
-      fr.close();
-    } catch (FileNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-String out = "";
-for(int i = 0;i<str.size();i++) out += str.get(i);
-if(out.charAt(0) != '{') result = out; else result = "";
+String out = readFile(com2);
+
+while(out.charAt(0) != '('){
+try {
+    Thread.sleep(10);
+} catch (InterruptedException e) {}
+out = readFile(com2);
+}
+
+if(out.charAt(0) != '{') result = "\nError: "+out; else{ 
+LinkedList<Float> λ = new LinkedList<Float>();
+String items[] = out.split(",");
+items[0] = items[0].split("{")[1];
+value = new LinkedList<>();
+System.out.println(out);
+for(int i = 0;i<items.length;i++){value.add(Float.valueOf(items[i]));}
+result = "";
+};
+result += "\nPrint:"+CustomFunction.readFile(new File("Com3.txt"));
+
 ptext = text;
 }
 }

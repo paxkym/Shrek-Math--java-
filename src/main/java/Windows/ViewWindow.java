@@ -215,13 +215,13 @@ class Graph extends Canvas {
     float minimum = 0;
     //find maximum
     for(int in = 0;in<l.size();in++){
-    if((float)l.get(in)>maximum){
+    if((float)l.get(in)>maximum&&Float.isFinite((float)l.get(in))&&!Float.isNaN((float)l.get(in))){
     maximum = (float)l.get(in);
     }
     }
 
     for(int in = 0;in<l.size();in++){
-    if((float)l.get(in)<minimum){
+    if((float)l.get(in)<minimum&&Float.isFinite((float)l.get(in))&&!Float.isNaN((float)l.get(in))){
     minimum = (float)l.get(in+begin);
     }
     }

@@ -25,9 +25,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
+import src.main.java.Tabs.Constant;
 import src.main.java.Tabs.CustomFunction;
 import src.main.java.Tabs.CustomWave;
 import src.main.java.Tabs.Tab;
+import src.main.java.Tabs.Trigonometry;
 import src.main.java.Shrek_Math;
 import src.main.java.Misc.Processor;
 import src.main.java.Windows.SettingsWindow;
@@ -49,6 +51,7 @@ public LinkedList thrds = new LinkedList<Thread>();
 DefaultListModel model = new DefaultListModel();
 public JPanel panel = new JPanel();
 public JPanel menuBarTop;
+public JPanel menuBarBottom;
 JList list = new JList(model);
 // public JPanel spanel = new JPanel();
 class Updater extends Thread{
@@ -72,6 +75,57 @@ panel.revalidate();
 
 }        
 }            
+public void buildBottomPanel(){
+int numInputs = 1;
+Tab tab = new Tab();
+JPanel spanel = new JPanel();
+JButton input1 = new JButton("Set Input 1");
+JButton input2 = new JButton("Set Input 2");
+JTextArea input1c = new JTextArea();
+JTextArea input2c = new JTextArea();
+spanel.setLayout(numInputs==1?new GridLayout(2, 1):new GridLayout(2, 2));
+spanel.add(input1);
+spanel.add(input2);
+spanel.add(input1c);
+spanel.add(input2c);
+
+if(numInputs == 1){
+input2c.setEnabled(false);
+input2.setEnabled(false);
+}
+input1c.addKeyListener(new KeyListener() {
+
+        @Override
+        public void keyTyped(KeyEvent e) {}
+
+        @Override
+        public void keyPressed(KeyEvent e) {}
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        
+        // tab.ptext = tab.text;
+        // tab.text = texta.getText();
+        }
+        
+       });
+input2c.addKeyListener(new KeyListener() {
+
+        @Override
+        public void keyTyped(KeyEvent e) {}
+
+        @Override
+        public void keyPressed(KeyEvent e) {}
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        // tab.ptext = tab.text;
+        // tab.text = texta.getText();
+        }
+        
+       });
+       menuBarBottom = spanel;
+}
 public void CreateView(int index){
 ViewWindow view = new ViewWindow();
 views.add(view);
@@ -89,7 +143,7 @@ public void goToTab(int index){
     if(tab.type != "Custom Function" && thrds.size() != 0){
       thrds.removeLast();
     }
-    if(tab.type == "Custom Wave"){
+  if(tab.type == "Custom Wave"){
     String opt[] = {"Square Wave", "Triangle Wave", "Sine Wave", "Rising Edge Sawtooth Wave", "Falling Edge Sawtooth Wave", "Straight Line", "Noise (Random)", "Bell Curve"};
     JComboBox menu = new JComboBox(opt); 
     JSpinner leng = new JSpinner();
@@ -181,7 +235,8 @@ public void goToTab(int index){
                       proc.process(tabs);
             }
     });
-  }else if(tab.type == "Custom Function"){
+  }
+  else if(tab.type == "Custom Function"){
     JPanel spanel = new JPanel();
     JTextArea texta = new JTextArea(tab.text);
     spanel.setLayout(new GridLayout(3, 1));
@@ -218,6 +273,84 @@ public void goToTab(int index){
        thrds.add(new Updater(selection));
        ((Thread) thrds.getLast()).start();
   }
+  else if(tab.type == "Constant"){// Do later
+    JPanel spanel = new JPanel();
+    JTextArea texta = new JTextArea(tab.text);
+    spanel.setLayout(new GridLayout(3, 1));
+    
+    spanel.add(new JLabel("Type function below:"));
+    spanel.add(texta);
+    spanel.add(new JLabel("Result:\n\n"+tab.result));
+
+
+     panel.removeAll();
+      panel.repaint();
+      panel.revalidate();
+    panel.add(spanel, BorderLayout.CENTER);
+    panel.add(new JScrollPane(list), BorderLayout.WEST);
+    panel.add(menuBarTop, BorderLayout.NORTH);
+      panel.repaint();
+      panel.revalidate();
+
+       texta.addKeyListener(new KeyListener() {
+
+        @Override
+        public void keyTyped(KeyEvent e) {}
+
+        @Override
+        public void keyPressed(KeyEvent e) {}
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        tab.ptext = tab.text;
+        tab.text = texta.getText();
+        }
+        
+       });
+       thrds.add(new Updater(selection));
+       ((Thread) thrds.getLast()).start();
+  }
+  else if(tab.type == "Trigonometry"){
+    String opt[] = {"Sine", "Cosine", "Tangeant", "Sinc", "Hyperbolic Sine", "Hyperbolic Cosine", "Hyperbolic Tangeant", "Secant", "Cosecant", "Cotangeant"};
+    JComboBox menu = new JComboBox(opt); 
+    JButton isInverse = new JButton(tab.isInverse?"Inverse":"Regular");
+    JPanel spanel = new JPanel();
+    
+    spanel.setLayout(new GridLayout(1, 2));
+    spanel.add(isInverse);
+    spanel.add(menu);
+
+     panel.removeAll();
+      panel.repaint();
+      panel.revalidate();
+    buildBottomPanel();
+    panel.add(spanel, BorderLayout.CENTER);
+    panel.add(new JScrollPane(list), BorderLayout.WEST);
+    panel.add(menuBarTop, BorderLayout.NORTH);
+    panel.add(menuBarBottom, BorderLayout.SOUTH);
+      panel.repaint();
+      panel.revalidate();
+    
+    menu.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        tab.subtype = menu.getSelectedIndex();
+        proc.process(tabs);
+      }
+      
+    });
+    isInverse.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+      tab.isInverse = !tab.isInverse;
+      isInverse.setText(tab.isInverse?"Inverse":"Regular");
+      }
+      
+    });
+  }
+
   return;
 }
 public Tab createNewTab(String name, String type, int subtype){
@@ -226,6 +359,10 @@ if(type == "Custom Wave"){
 tab = new CustomWave();
 }else if(type == "Custom Function"){
 tab = new CustomFunction();
+}else if(type == "Constant"){
+tab = new Constant();
+}else if(type == "Trigonometry"){
+tab = new Trigonometry();
 }
 
 tab.name = name;

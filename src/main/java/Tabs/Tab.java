@@ -18,5 +18,8 @@ public int realLength = 200;
 public int resolution = 10;
 public String result;
 public String ptext;
+public boolean isInverse = false;
+public float in1c = Float.NaN;
+public float in2c = Float.NaN;
 public void process(){}
 }

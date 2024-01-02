@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 public class Com1 {
 static ArrayList<Float> input = new ArrayList<Float>();
 static ArrayList<Float> output = new ArrayList<Float>();

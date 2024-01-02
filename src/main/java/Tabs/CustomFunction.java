@@ -73,7 +73,7 @@ String fc = "";
         // TODO Auto-generated catch block
         e.printStackTrace();
     }
-    
+
     //Run program
     ProcessBuilder p =
     new ProcessBuilder("java", com1.getAbsolutePath());
@@ -83,21 +83,27 @@ String fc = "";
         // TODO Auto-generated catch block
         e.printStackTrace();
     }
-String out = readFile(com2);
+String outi = readFile(com2);
 
-while(out.charAt(0) != '('){
+while(outi.charAt(0) == '('){
 try {
-    Thread.sleep(10);
+    Thread.sleep(50);
 } catch (InterruptedException e) {}
-out = readFile(com2);
+outi = readFile(com2);
 }
 
-if(out.charAt(0) != '{') result = "\nError: "+out; else{ 
-LinkedList<Float> λ = new LinkedList<Float>();
+if(outi.charAt(0) != '{'){
+result = "\nError: "+outi; 
+}else{ 
+String out = "";
+for(int i = 1;i<outi.length()-1;i++) out += outi.charAt(i);
 String items[] = out.split(",");
-items[0] = items[0].split("{")[1];
+
+// System.out.print("Items[0]: ");
 value = new LinkedList<>();
-System.out.println(out);
+
+//for(int i = 0;i<500;i++)output.add(4f);
+// System.out.println(items.length);
 for(int i = 0;i<items.length;i++){value.add(Float.valueOf(items[i]));}
 result = "";
 };

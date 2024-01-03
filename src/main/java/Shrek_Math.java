@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.*;
 
-
+// Christ is king! ☦☦☦
 public class Shrek_Math implements ActionListener {
     // Variables
     JFrame MainWindow = new JFrame();

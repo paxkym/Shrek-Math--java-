@@ -1,5 +1,6 @@
 package src.main.java.Windows;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -29,8 +30,10 @@ import src.main.java.Tabs.Constant;
 import src.main.java.Tabs.CustomFunction;
 import src.main.java.Tabs.CustomWave;
 import src.main.java.Tabs.Tab;
+import src.main.java.Tabs.Transform;
 import src.main.java.Tabs.Trigonometry;
 import src.main.java.Shrek_Math;
+import src.main.java.Misc.CustomMath;
 import src.main.java.Misc.Processor;
 import src.main.java.Windows.SettingsWindow;
 
@@ -46,14 +49,23 @@ SettingsWindow settings = new SettingsWindow();
 Processor proc = new Processor();
 public ArrayList views = new ArrayList<Tab>();
 public LinkedList thrds = new LinkedList<Thread>();
+public boolean choosing = false;
+public boolean isin1 = true;
 
 
 DefaultListModel model = new DefaultListModel();
 public JPanel panel = new JPanel();
 public JPanel menuBarTop;
 public JPanel menuBarBottom;
+JButton input1 = new JButton("Set Input 1");
+JButton input2 = new JButton("Set Input 2");
 JList list = new JList(model);
 // public JPanel spanel = new JPanel();
+public void re(){
+panel.repaint();
+panel.revalidate();
+}
+
 class Updater extends Thread{
 int index = 0;
 Updater(int i){
@@ -75,12 +87,12 @@ panel.revalidate();
 
 }        
 }            
-public void buildBottomPanel(){
-int numInputs = 1;
+public void buildBottomPanel(int index, int numInputs){
+
 Tab tab = new Tab();
 JPanel spanel = new JPanel();
-JButton input1 = new JButton("Set Input 1");
-JButton input2 = new JButton("Set Input 2");
+input1 = new JButton("Set Input 1");
+input2 = new JButton("Set Input 2");
 JTextArea input1c = new JTextArea();
 JTextArea input2c = new JTextArea();
 spanel.setLayout(numInputs==1?new GridLayout(2, 1):new GridLayout(2, 2));
@@ -103,7 +115,11 @@ input1c.addKeyListener(new KeyListener() {
 
         @Override
         public void keyReleased(KeyEvent e) {
-        
+    choosing = false;
+    list.setBackground(Color.WHITE);
+    input1.setText("Set Input 1");
+    panel.repaint();
+    panel.revalidate();
         // tab.ptext = tab.text;
         // tab.text = texta.getText();
         }
@@ -121,10 +137,49 @@ input2c.addKeyListener(new KeyListener() {
         public void keyReleased(KeyEvent e) {
         // tab.ptext = tab.text;
         // tab.text = texta.getText();
+  choosing = false;
+   list.setBackground(Color.WHITE);
+   input2.setText("Set Input 2");
+    panel.repaint();
+    panel.revalidate();
         }
         
        });
-       menuBarBottom = spanel;
+input1.addActionListener(new ActionListener() {
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    choosing = !choosing;
+    if(choosing){
+   list.setBackground(Color.LIGHT_GRAY);
+   input1.setText("Cancel");
+    }else{
+   list.setBackground(Color.WHITE);
+   input1.setText("Set Input 1");
+    }
+    panel.repaint();
+    panel.revalidate();
+  }
+  
+});
+input2.addActionListener(new ActionListener() {
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    choosing = !choosing;
+    if(choosing){
+   list.setBackground(Color.LIGHT_GRAY);
+   input2.setText("Cancel");
+    }else{
+   list.setBackground(Color.WHITE);
+   input2.setText("Set Input 2");
+    }
+    panel.repaint();
+    panel.revalidate();
+  }
+  
+});
+menuBarBottom = spanel;
 }
 public void CreateView(int index){
 ViewWindow view = new ViewWindow();
@@ -311,7 +366,7 @@ public void goToTab(int index){
        ((Thread) thrds.getLast()).start();
   }
   else if(tab.type == "Trigonometry"){
-    String opt[] = {"Sine", "Cosine", "Tangeant", "Sinc", "Hyperbolic Sine", "Hyperbolic Cosine", "Hyperbolic Tangeant", "Secant", "Cosecant", "Cotangeant"};
+    String opt[] = {"Sine", "Cosine", "Tangeant", "Sinc", "Hyperbolic Sine", "Hyperbolic Cosine", "Hyperbolic Tangeant"};
     JComboBox menu = new JComboBox(opt); 
     JButton isInverse = new JButton(tab.isInverse?"Inverse":"Regular");
     JPanel spanel = new JPanel();
@@ -323,7 +378,7 @@ public void goToTab(int index){
      panel.removeAll();
       panel.repaint();
       panel.revalidate();
-    buildBottomPanel();
+    buildBottomPanel(selection, 1);
     panel.add(spanel, BorderLayout.CENTER);
     panel.add(new JScrollPane(list), BorderLayout.WEST);
     panel.add(menuBarTop, BorderLayout.NORTH);
@@ -337,6 +392,11 @@ public void goToTab(int index){
       public void actionPerformed(ActionEvent e) {
         tab.subtype = menu.getSelectedIndex();
         proc.process(tabs);
+        if(menu.getSelectedIndex() == 4 || menu.getSelectedIndex() == 5 || menu.getSelectedIndex() == 6){
+          isInverse.setEnabled(false);
+        }else{
+          isInverse.setEnabled(true);
+        }
       }
       
     });
@@ -346,6 +406,35 @@ public void goToTab(int index){
       public void actionPerformed(ActionEvent e) {
       tab.isInverse = !tab.isInverse;
       isInverse.setText(tab.isInverse?"Inverse":"Regular");
+      }
+      
+    });
+  }
+  else if(tab.type == "Transform"){
+    String opt[] = {"Fourier Transform", "Inverse Fourier Transform"};
+    JComboBox menu = new JComboBox(opt); 
+    JPanel spanel = new JPanel();
+    
+    spanel.setLayout(new GridLayout(1, 2));
+    spanel.add(menu);
+
+     panel.removeAll();
+      panel.repaint();
+      panel.revalidate();
+    buildBottomPanel(selection, 1);
+    panel.add(spanel, BorderLayout.CENTER);
+    panel.add(new JScrollPane(list), BorderLayout.WEST);
+    panel.add(menuBarTop, BorderLayout.NORTH);
+    panel.add(menuBarBottom, BorderLayout.SOUTH);
+      panel.repaint();
+      panel.revalidate();
+    
+    menu.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        tab.subtype = menu.getSelectedIndex();
+        proc.process(tabs);
       }
       
     });
@@ -363,6 +452,8 @@ tab = new CustomFunction();
 tab = new Constant();
 }else if(type == "Trigonometry"){
 tab = new Trigonometry();
+}else if(type == "Transform"){
+tab = new Transform();
 }
 
 tab.name = name;
@@ -453,6 +544,8 @@ public void requestRendering(int type){
 
    }
    public void CreateWindow(){
+    CustomMath c = new CustomMath();
+    c.start();
         panel.setLayout(new BorderLayout());
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -473,17 +566,20 @@ list = new JList(model);
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                list1IsSelected = !list1IsSelected;
-                if(list1IsSelected){
-                    if(list.getSelectedValue() == "Jane Doe"){
-
-                        // list.setSelectedIndex(selection);
-                    }else{
-                        selection = list.getSelectedIndex()-1;
-                        goToTab(list.getSelectedIndex()-1);
-                        System.out.println("S");
-                    };
-                }
+              list1IsSelected = !list1IsSelected;
+              if(list1IsSelected){
+              if(choosing){
+              choosing = false;
+              tabs.get(selection).input1 = tabs.get(list.getSelectedIndex()-1);
+              list.setBackground(Color.WHITE);
+              input1.setText("Set Input 1");
+              input2.setText("Set Input 2");
+              re();
+              }else{
+              selection = list.getSelectedIndex()-1;
+              goToTab(list.getSelectedIndex()-1);
+              }
+            }
             }
         });
             

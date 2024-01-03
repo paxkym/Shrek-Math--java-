@@ -247,8 +247,9 @@ class Graph extends Canvas {
 
   g.drawLine(0,0, 496,0);
   g.drawLine(ux, 0, ux, 163);
-  g.drawString(String.valueOf(out.value.get(ux+begin)), ux, 81);
-  }
+  g.drawString("y: "+String.valueOf(out.value.get(ux+begin)), ux, 106);
+  g.drawString("x: "+String.valueOf(((float)(ux+begin))/10), ux, 57);
+}
 
   g1.drawImage(mainimg, 0, 0, null); 
 
